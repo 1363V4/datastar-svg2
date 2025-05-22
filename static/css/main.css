@@ -1,0 +1,65 @@
+@import url('gold.css');
+@import url('https://fonts.googleapis.com/css2?family=National+Park&family=Sigmar+One&display=swap');
+
+:root {
+    --primary: #137481;
+    --secondary: #d8a841;
+    --text: #012345;
+    --bg-primary: #a1a7b1;
+    --bg-secondary: #567dad;
+    --bg-2: hsl(from var(--bg-secondary) h s 60);
+    --bg-3: hsl(from var(--bg-secondary) h s 70);
+}
+
+html {
+    font-family: "National Park", sans-serif;
+    color: var(--text);
+    background: var(--bg-secondary);
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 5rem 1fr;
+    padding: 1rem;
+}
+
+header {
+    font-family: "Sigmar One", sans-serif;
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+    &#defs {
+        display: none;
+    }
+}
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    width: 100%;
+    height: 100%;
+}
+
+path {
+    opacity: .8;
+    stroke-linejoin: round;
+}
+
+circle {
+    filter: drop-shadow(0px 0px 1px white);
+    animation: glow .5s infinite;
+}
+
+@keyframes glow {
+    50% {filter: drop-shadow(0px 0px 3px white);}
+}
+
+text {
+    font-size: .5rem;
+    text-anchor: middle;
+}
