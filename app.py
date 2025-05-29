@@ -14,17 +14,22 @@ app.secret_key = 'a_secret_key'
 
 STONKS_1 = [round(random()*90) for _ in range(10)]
 STONKS_2 = [round(random()*90) for _ in range(10)]
+REFRESH_RATE = .5
 
 # UTILS
 
 async def get_stonks():
     global STONKS_1, STONKS_2
     while True:
-        new_stonk = round(random()*90)
+        # new_stonk = round(random()*90)
+        # new_stonk = min(max(STONKS_1[-1] + round(20*random()-10), 0), 90)
+        new_stonk = round(STONKS_1[-1] + 90*random())//2
         STONKS_1 = STONKS_1[1:] + [new_stonk]
-        new_stonk = round(random()*90)
+        # new_stonk = round(random()*90)
+        # new_stonk = min(max(STONKS_2[-1] + round(20*random()-10), 0), 90)
+        new_stonk = round(STONKS_2[-1] + 90*random())//2
         STONKS_2 = STONKS_2[1:] + [new_stonk]
-        await asyncio.sleep(2)
+        await asyncio.sleep(REFRESH_RATE)
 
 async def make_path(stonks):
     path = f"M0,{100-stonks[0]}"
@@ -53,7 +58,9 @@ async def defs_change():
         <circle cx={circle_1["x"]} cy={circle_1["y"]} r=1 fill=var(--primary) />
         <path d="{path_2}" stroke=var(--secondary) />
         <circle cx={circle_2["x"]} cy={circle_2["y"]} r=1 fill=var(--secondary) />
-        <text x=50% y=8 fill={text_data[1]}>{text_data[0]}</text>
+        <text id="advice" x=50 y=8 fill={text_data[1]}>{text_data[0]}</text>
+        <text x=90 y={98-STONKS_1[-1]} fill=var(--primary)>{STONKS_1[-1]}</text>
+        <text x=90 y={98-STONKS_2[-1]} fill=var(--secondary)>{STONKS_2[-1]}</text>
     </g>
 </g>
 </defs>
@@ -66,7 +73,7 @@ async def get_echarts_data():
     gauge_data = [
         {
             "value": STONKS_1[-1],
-            "name": "DATA",
+            "name": "data",
             "title": {
                 "offsetCenter": ["0%", "-30%"]
             },
@@ -77,7 +84,7 @@ async def get_echarts_data():
         },
         {
             "value": STONKS_2[-1],
-            "name": "STARS",
+            "name": "stars",
             "title": {
                 "offsetCenter": ["0%", "0%"]
             },
@@ -110,7 +117,7 @@ async def defs():
                 yield SSE.execute_script(
                     script=f"myChart.setOption({{series: [{{data: {gauge_data}, pointer: {{show: false}}}}]}});"
                 )
-                await asyncio.sleep(2)
+                await asyncio.sleep(REFRESH_RATE)
             except asyncio.CancelledError:
                 break
     return await make_datastar_response(event())

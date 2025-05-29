@@ -60,6 +60,9 @@ circle {
 }
 
 text {
-    font-size: .5rem;
+    font-size: .2rem;
     text-anchor: middle;
+    &#advice {
+        font-size: .5rem;
+    }
 }
