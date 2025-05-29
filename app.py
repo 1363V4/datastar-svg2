@@ -10,11 +10,10 @@ import json
 # CONFIG
 
 app = Quart(__name__)
-app.secret_key = 'a_secret_key'
 
 STONKS_1 = [round(random()*90) for _ in range(10)]
 STONKS_2 = [round(random()*90) for _ in range(10)]
-REFRESH_RATE = .5
+REFRESH_RATE = .001
 
 # UTILS
 
@@ -52,7 +51,7 @@ async def defs_change():
 <defs>
 <g id="left">
     <g
-    fill=none stroke-width=1
+    fill=none stroke-width=2
     vector-effect=non-scaling-stroke>
         <path d="{path_1}" stroke=var(--primary) />
         <circle cx={circle_1["x"]} cy={circle_1["y"]} r=1 fill=var(--primary) />
